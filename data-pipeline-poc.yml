@@ -1,0 +1,58 @@
+version: "2"
+
+services:
+    zookeeper:
+        container_name: "zookeeper"
+        image: "confluent/zookeeper"
+        ports: 
+            - "2181:2181"
+        networks:        
+            - confluent-network
+    kafka:
+        container_name: "kafka"
+        image: "confluent/kafka"
+        ports: 
+            - "9092:9092"
+        depends_on:
+            - zookeeper
+        environment:
+            KAFKA_BROKER_ID: "1"
+            KAFKA_ADVERTISED_HOST_NAME: "{SET DOCKER HOST IP}"
+            KAFKA_ADVERTISED_PORT: "9092"
+        networks:
+            - confluent-network
+    schema-registry:
+        container_name: "schema-registry"
+        image: "confluent/schema-registry"
+        ports: 
+            - "8081:8081"
+        depends_on:
+            - kafka
+            - zookeeper
+        networks:
+            - confluent-network
+    rest-proxy:
+        container_name: "rest-proxy"
+        image: "confluent/rest-proxy"
+        ports: 
+            - "8082:8082"
+        depends_on:
+            - zookeeper
+            - kafka
+            - schema-registry
+        networks:
+            - confluent-network
+    memsql:
+        container_name: "memsql"
+        image: "memsql/quickstart"
+        ports:
+            - "3306:3306"
+            - "9000:9000"
+        depends_on:
+            - zookeeper
+            - kafka
+        networks:
+            - confluent-network
+networks:
+    confluent-network:
+        driver: bridge
