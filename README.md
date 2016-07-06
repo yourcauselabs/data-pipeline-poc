@@ -6,8 +6,8 @@ This is a docker compose yml which wraps confluent data platform and memsql
 Install docker tool box for mac or windows if you haven't already. (https://www.docker.com/products/docker-toolbox)
     
     1. Once you have the file downloaded, open and replace KAFKA_ADVERTISED_HOST_NAME: "{SET DOCKER HOST IP}" with the IP of the docker host. Example: KAFKA_ADVERTISED_HOST_NAME: "10.10.0.21". This will ensure Kafka is reachable from any client library.
-    2. Run "docker-compose -f data-pipeline-poc.yml up" to start all services
-    3. Run "docker-compose -f data-pipeline-poc.yml down" to shut down and dispose all services.
+    2. Run "docker-compose up" to start all services
+    3. Run "docker-compose down" to shut down and dispose all services.
     
 ## What this docker compose file does.
     1. Creates a bridge network to enable all services define in the file to communicate with each other.
